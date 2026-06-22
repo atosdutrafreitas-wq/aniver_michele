@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🌸 Convite Secreto — Michele</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Space+Grotesk:wght@300;400;500&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root {
+    --rose:#FF6FA3; --rose-deep:#E8306A; --rose-mid:#FF8FBB;
+    --rose-pale:#FFD6E7; --rose-glow:#FF4D8F;
+    --black:#0D050A; --green:#4DFFB0; --red:#FF4D6A;
+  }
+  body {
+    background:var(--black);
+    display:flex; align-items:flex-start; justify-content:center;
+    min-height:100vh; font-family:'Space Grotesk',sans-serif;
+    overflow-x:hidden; padding:20px 0 40px;
+  }
+  .wrap { width:100%; max-width:420px; padding:0 16px; }
+
+  @keyframes pulseglow { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.06);opacity:.85;} }
+  @keyframes rotatering { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  @keyframes starPop { 0%{transform:scale(0);} 70%{transform:scale(1.35);} 100%{transform:scale(1);} }
+  @keyframes scan { 0%{top:0;} 100%{top:100%;} }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes floatp { 0%{transform:translateY(800px);opacity:0;} 8%{opacity:.75;} 92%{opacity:.45;} 100%{transform:translateY(-20px);opacity:0;} }
+
+  /* ===== CAPA ===== */
+  #screen-capa { display:flex; flex-direction:column; align-items:center; text-align:center; padding-top:50px; min-height:90vh; justify-content:center; }
+  .capa-glow { width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(255,77,143,.45) 0%,transparent 70%); display:flex; align-items:center; justify-content:center; margin-bottom:28px; animation:pulseglow 3s ease-in-out infinite; border:1px solid rgba(255,111,163,.2); position:relative; }
+  .capa-emoji { font-size:72px; }
+  .capa-lines { position:absolute; inset:-12px; border-radius:50%; border:1px solid rgba(255,111,163,.15); animation:rotatering 8s linear infinite; }
+  .capa-lines::before { content:''; position:absolute; width:8px; height:8px; border-radius:50%; background:var(--rose); top:-4px; left:50%; transform:translateX(-50%); box-shadow:0 0 8px var(--rose-glow); }
+  .capa-tag { font-size:8px; letter-spacing:5px; text-transform:uppercase; color:var(--rose); border:1px solid rgba(255,111,163,.3); padding:5px 16px; margin-bottom:20px; background:rgba(255,77,143,.06); }
+  .capa-title { font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:300; color:var(--rose-pale); line-height:1.15; margin-bottom:10px; filter:drop-shadow(0 0 14px rgba(255,77,143,.35)); }
+  .capa-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:rgba(255,143,187,.65); margin-bottom:36px; line-height:1.6; }
+  .capa-desc { font-size:12.5px; color:rgba(255,214,231,.45); line-height:1.75; margin-bottom:40px; }
+  .capa-desc strong { color:var(--rose); }
+  .btn-start { width:100%; padding:18px; background:linear-gradient(135deg,var(--rose-deep),var(--rose)); color:white; font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:4px; text-transform:uppercase; border:none; cursor:pointer; box-shadow:0 0 28px rgba(255,77,143,.45); font-weight:400; }
+  .btn-start:active { opacity:.85; }
+
+  /* ===== ERROU ===== */
+  #screen-errou { display:none; flex-direction:column; align-items:center; text-align:center; padding-top:70px; }
+  .errou-glow { width:130px; height:130px; border-radius:50%; background:radial-gradient(circle,rgba(255,77,106,.3) 0%,transparent 70%); display:flex; align-items:center; justify-content:center; margin-bottom:24px; animation:pulseglow 2s ease-in-out infinite; }
+  .errou-emoji { font-size:52px; }
+  .errou-tag { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--red); border:1px solid rgba(255,77,106,.3); padding:5px 16px; margin-bottom:20px; }
+  .errou-title { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:var(--rose-pale); margin-bottom:12px; }
+  .errou-msg { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:rgba(255,214,231,.6); line-height:1.7; margin-bottom:8px; max-width:280px; }
+  .errou-certa { background:rgba(255,77,143,.06); border:1px solid rgba(255,111,163,.2); padding:14px 20px; margin:18px 0 32px; width:100%; }
+  .errou-certa-label { font-size:8px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,111,163,.45); margin-bottom:6px; }
+  .errou-certa-valor { font-size:18px; color:var(--rose-pale); font-weight:300; }
+  .btn-retry { width:100%; padding:16px; background:transparent; border:1px solid rgba(255,111,163,.45); color:var(--rose); font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; cursor:pointer; }
+  .btn-retry:active { opacity:.8; }
+
+  /* ===== QUIZ ===== */
+  #screen-quiz { display:none; }
+  .progress-label { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,111,163,.5); text-align:right; margin-bottom:8px; }
+  .progress-bar-wrap { width:100%; height:3px; background:rgba(255,111,163,.12); margin-bottom:24px; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--rose-deep),var(--rose)); transition:width .5s ease; box-shadow:0 0 8px var(--rose-glow); }
+  .stars-row { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+  .star { font-size:18px; opacity:.18; filter:grayscale(1); transition:all .4s; }
+  .star.earned { opacity:1; filter:none; animation:starPop .4s ease; }
+  .question-card { background:linear-gradient(160deg,#1A0812 0%,#0D0509 100%); border:1px solid rgba(255,111,163,.18); padding:28px 22px; margin-bottom:16px; position:relative; overflow:hidden; }
+  .question-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--rose),transparent); }
+  .q-number { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--rose); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .q-number::after { content:''; flex:1; height:1px; background:rgba(255,111,163,.15); }
+  .q-emoji { font-size:34px; margin-bottom:12px; display:block; }
+  .q-text { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:300; color:var(--rose-pale); line-height:1.4; }
+  .options-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .opt-btn { padding:14px 10px; background:rgba(255,77,143,.04); border:1px solid rgba(255,111,163,.18); color:rgba(255,214,231,.78); font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:300; cursor:pointer; text-align:center; line-height:1.3; }
+  .opt-btn:active { opacity:.8; }
+  .opt-btn.correct { background:rgba(77,255,176,.1); border-color:var(--green); color:var(--green); }
+  .opt-btn.wrong { background:rgba(255,77,106,.1); border-color:var(--red); color:var(--red); }
+  .opt-btn.reveal-correct { background:rgba(77,255,176,.05); border-color:rgba(77,255,176,.35); color:rgba(77,255,176,.65); }
+  .opt-btn:disabled { cursor:default; }
+  .feedback-box { padding:13px 16px; border:1px solid rgba(255,111,163,.18); background:rgba(255,77,143,.05); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14.5px; color:rgba(255,214,231,.7); line-height:1.6; text-align:center; margin-bottom:14px; display:none; }
+  .feedback-box.show { display:block; }
+  .btn-next { width:100%; padding:16px; background:linear-gradient(135deg,var(--rose-deep),var(--rose)); color:white; font-family:'Space Grotesk',sans-serif; font-size:11px; letter-spacing:4px; text-transform:uppercase; border:none; cursor:pointer; display:none; box-shadow:0 0 20px rgba(255,77,143,.35); font-weight:400; }
+  .btn-next.show { display:block; }
+  .btn-next:active { opacity:.85; }
+
+  /* ===== CONVITE ===== */
+  #screen-convite { display:none; animation:fadeIn 1s ease; }
+  .convite-card { background:linear-gradient(160deg,#1A0812 0%,#0D0509 50%,#1A0D14 100%); position:relative; overflow:hidden; border:1px solid rgba(255,111,163,.22); box-shadow:0 0 40px rgba(255,77,143,.14); }
+  .grid-bg { position:absolute; inset:0; background-image:linear-gradient(rgba(255,111,163,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,111,163,.07) 1px,transparent 1px); background-size:28px 28px; }
+  .glow-top { position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:340px; height:340px; background:radial-gradient(circle,rgba(255,77,143,.42) 0%,transparent 70%); animation:pulseglow 4s ease-in-out infinite; }
+  .glow-bottom { position:absolute; bottom:-80px; right:-60px; width:250px; height:250px; background:radial-gradient(circle,rgba(255,111,163,.22) 0%,transparent 70%); }
+  .scanline { position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,transparent,var(--rose-glow),var(--rose),var(--rose-glow),transparent); animation:scan 5s linear infinite; opacity:.65; z-index:5; }
+  .corner { position:absolute; width:30px; height:30px; z-index:4; }
+  .corner::before,.corner::after { content:''; position:absolute; background:var(--rose); box-shadow:0 0 7px var(--rose-glow); }
+  .corner::before { width:100%; height:1.5px; }
+  .corner::after { width:1.5px; height:100%; }
+  .corner-tl{top:16px;left:16px;} .corner-tl::before{top:0;left:0;} .corner-tl::after{top:0;left:0;}
+  .corner-tr{top:16px;right:16px;} .corner-tr::before{top:0;right:0;left:auto;} .corner-tr::after{top:0;right:0;left:auto;}
+  .corner-bl{bottom:16px;left:16px;} .corner-bl::before{bottom:0;left:0;top:auto;} .corner-bl::after{bottom:0;left:0;top:auto;}
+  .corner-br{bottom:16px;right:16px;} .corner-br::before{bottom:0;right:0;left:auto;top:auto;} .corner-br::after{bottom:0;right:0;left:auto;top:auto;}
+  .convite-content { position:relative; z-index:3; padding:50px 30px 42px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .unlocked-badge { font-size:8px; letter-spacing:4px; text-transform:uppercase; color:var(--green); border:1px solid rgba(77,255,176,.3); padding:5px 16px; margin-bottom:10px; }
+  .tag-conv { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--rose); border:1px solid rgba(255,111,163,.38); padding:5px 16px; margin-bottom:26px; }
+  .voce-esta { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:rgba(255,143,187,.72); letter-spacing:2px; margin-bottom:4px; }
+  .convidada { font-size:10px; letter-spacing:6px; text-transform:uppercase; color:rgba(255,214,231,.3); margin-bottom:14px; }
+  .name-wrap { position:relative; margin-bottom:6px; }
+  .name { font-family:'Cormorant Garamond',serif; font-size:80px; font-weight:300; line-height:.9; letter-spacing:-2px; color:transparent; -webkit-text-stroke:1px var(--rose-pale); filter:drop-shadow(0 0 16px rgba(255,77,143,.45)); }
+  .name-fill { position:absolute; inset:0; font-family:'Cormorant Garamond',serif; font-size:80px; font-weight:300; line-height:.9; letter-spacing:-2px; color:var(--rose); clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%); opacity:.28; }
+  .divider-line { width:100%; height:1px; background:linear-gradient(90deg,transparent,var(--rose-deep),var(--rose),var(--rose-deep),transparent); margin:22px 0; box-shadow:0 0 7px rgba(255,77,143,.35); }
+  .info-grid { width:100%; display:grid; grid-template-columns:1fr 1fr; border:1px solid rgba(255,111,163,.15); }
+  .info-cell { padding:14px 16px; border-right:1px solid rgba(255,111,163,.12); border-bottom:1px solid rgba(255,111,163,.12); }
+  .info-cell:nth-child(2),.info-cell:nth-child(4){border-right:none;}
+  .info-cell:nth-child(3),.info-cell:nth-child(4){border-bottom:none;}
+  .info-label { font-size:8px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,111,163,.45); margin-bottom:4px; }
+  .info-value { font-size:14px; color:var(--rose-pale); font-weight:300; }
+  .info-value span { font-size:10px; color:rgba(255,143,187,.48); display:block; margin-top:2px; letter-spacing:1px; }
+  .msg-block { width:100%; margin:20px 0 0; border:1px solid rgba(255,111,163,.18); background:rgba(255,77,143,.04); padding:20px 22px; position:relative; }
+  .msg-block::before { content:'❝'; position:absolute; top:-13px; left:50%; transform:translateX(-50%); font-size:26px; color:var(--rose); background:#0D0509; padding:0 10px; line-height:1; filter:drop-shadow(0 0 7px var(--rose-glow)); }
+  .msg-label { font-size:8px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,111,163,.38); margin-bottom:10px; }
+  .msg-text { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:rgba(255,214,231,.78); line-height:1.8; }
+  .msg-text strong { color:var(--rose-pale); font-style:normal; font-weight:400; }
+  .rsvp-block { width:100%; margin-top:24px; }
+  .rsvp-label { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,111,163,.5); text-align:center; margin-bottom:14px; }
+  .rsvp-btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .rsvp-sim { padding:16px; background:linear-gradient(135deg,var(--rose-deep),var(--rose)); border:none; color:white; font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; font-weight:400; box-shadow:0 0 16px rgba(255,77,143,.3); }
+  .rsvp-sim:active { opacity:.85; }
+  .rsvp-nao { padding:16px; background:transparent; border:1px solid rgba(255,111,163,.3); color:rgba(255,214,231,.55); font-family:'Space Grotesk',sans-serif; font-size:12px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; }
+  .rsvp-nao:active { opacity:.8; }
+  .divider-dot { display:flex; align-items:center; gap:10px; margin:22px 0; width:100%; }
+  .divider-dot::before { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(255,111,163,.22)); }
+  .divider-dot::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(255,111,163,.22),transparent); }
+  .dot-center { width:5px; height:5px; border-radius:50%; background:var(--rose); box-shadow:0 0 7px var(--rose-glow); }
+  .footer-conv { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,111,163,.4); }
+  .particle { position:absolute; border-radius:50%; background:var(--rose); z-index:2; animation:floatp linear infinite; opacity:0; box-shadow:0 0 4px var(--rose-glow); }
+
+  /* ===== NÃO VAI ===== */
+  #screen-nao { display:none; flex-direction:column; align-items:center; text-align:center; padding-top:80px; }
+  .nao-glow { width:140px; height:140px; border-radius:50%; background:radial-gradient(circle,rgba(255,77,143,.3) 0%,transparent 70%); display:flex; align-items:center; justify-content:center; margin-bottom:24px; animation:pulseglow 3s ease-in-out infinite; }
+  .nao-emoji { font-size:56px; }
+  .nao-tag { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--rose); border:1px solid rgba(255,111,163,.3); padding:5px 16px; margin-bottom:20px; }
+  .nao-title { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:var(--rose-pale); line-height:1.25; margin-bottom:16px; }
+  .nao-msg { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:rgba(255,214,231,.7); line-height:1.8; max-width:300px; margin-bottom:32px; }
+  .nao-msg strong { color:var(--rose-pale); font-style:normal; }
+  .btn-volta { width:100%; padding:14px; background:transparent; border:1px solid rgba(255,111,163,.4); color:var(--rose); font-family:'Space Grotesk',sans-serif; font-size:10px; letter-spacing:4px; text-transform:uppercase; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- CAPA -->
+  <div id="screen-capa">
+    <div class="capa-glow">
+      <div class="capa-lines"></div>
+      <div class="capa-emoji">🔐</div>
+    </div>
+    <div class="capa-tag">✦ Convite Secreto ✦</div>
+    <div class="capa-title">Você conhece<br>a Michele?</div>
+    <p class="capa-sub">Prove que sim para desbloquear o convite dela</p>
+    <p class="capa-desc">
+      São <strong>5 perguntas</strong> sobre a aniversariante. 🌸<br>
+      Acerte todas e o convite aparece pra você.<br><br>
+      Atenção: <strong>errou uma, volta ao início!</strong> 😅
+    </p>
+    <button class="btn-start" onclick="startQuiz()">✦ Aceitar o Desafio ✦</button>
+  </div>
+
+  <!-- ERROU -->
+  <div id="screen-errou">
+    <div class="errou-glow"><div class="errou-emoji">💔</div></div>
+    <div class="errou-tag">✦ Oops! ✦</div>
+    <div class="errou-title">Essa não era! 😅</div>
+    <p class="errou-msg">Quem conhece bem a Michele sabe essa de cor...</p>
+    <div class="errou-certa">
+      <div class="errou-certa-label">A resposta certa era</div>
+      <div class="errou-certa-valor" id="errou-certa-valor">—</div>
+    </div>
+    <button class="btn-retry" onclick="reiniciar()">↩ Tentar de Novo desde o Início</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz">
+    <div class="progress-label" id="prog-label">Pergunta 1 de 5</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-bar" style="width:20%"></div></div>
+    <div class="stars-row">
+      <span class="star" id="star-0">⭐</span>
+      <span class="star" id="star-1">⭐</span>
+      <span class="star" id="star-2">⭐</span>
+      <span class="star" id="star-3">⭐</span>
+      <span class="star" id="star-4">⭐</span>
+    </div>
+    <div class="question-card">
+      <div class="q-number" id="q-num">Pergunta 01</div>
+      <span class="q-emoji" id="q-emoji"></span>
+      <div class="q-text" id="q-text"></div>
+    </div>
+    <div class="options-grid" id="options-grid"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Próxima pergunta →</button>
+  </div>
+
+  <!-- CONVITE -->
+  <div id="screen-convite">
+    <div class="convite-card">
+      <div class="grid-bg"></div><div class="glow-top"></div><div class="glow-bottom"></div><div class="scanline"></div>
+      <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+      <div class="particle" style="left:8%;width:2px;height:2px;animation-duration:9s;animation-delay:0s;"></div>
+      <div class="particle" style="left:22%;width:3px;height:3px;animation-duration:12s;animation-delay:1.5s;"></div>
+      <div class="particle" style="left:38%;width:2px;height:2px;animation-duration:8s;animation-delay:3s;"></div>
+      <div class="particle" style="left:54%;width:1px;height:1px;animation-duration:14s;animation-delay:.5s;"></div>
+      <div class="particle" style="left:68%;width:2px;height:2px;animation-duration:10s;animation-delay:2s;"></div>
+      <div class="particle" style="left:82%;width:3px;height:3px;animation-duration:11s;animation-delay:4s;"></div>
+      <div class="convite-content">
+        <div class="unlocked-badge">✓ Convite Desbloqueado</div>
+        <div class="tag-conv">✦ Aniversário ✦</div>
+        <div class="voce-esta">você está convidada para celebrar</div>
+        <div class="convidada">uma noite especial</div>
+        <div class="name-wrap"><div class="name">Michele</div><div class="name-fill">Michele</div></div>
+        <div class="divider-line"></div>
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-label">Data</div><div class="info-value">26 de Junho<span>Sexta-feira</span></div></div>
+          <div class="info-cell"><div class="info-label">Horário</div><div class="info-value">19:00h<span>Pontualmente 🌸</span></div></div>
+          <div class="info-cell"><div class="info-label">Local</div><div class="info-value">Pizzaria<span>Primavera</span></div></div>
+          <div class="info-cell"><div class="info-label">Dresscode</div><div class="info-value">Livre<span>Venha linda ✨</span></div></div>
+        </div>
+        <div class="msg-block">
+          <div class="msg-label">Para você</div>
+          <p class="msg-text">
+            Você é daquelas pessoas que iluminam qualquer ambiente que entra.<br><br>
+            Nesse dia tão especial, quero ter você do meu lado pra celebrar juntos, com muito carinho, risada e memórias lindas.<br><br>
+            <strong>Sua presença transforma tudo. Venha! 💗</strong>
+          </p>
+        </div>
+        <div class="rsvp-block">
+          <div class="rsvp-label">✦ Confirme sua presença ✦</div>
+          <div class="rsvp-btns">
+            <button class="rsvp-sim" onclick="rsvpSim()">🎉 Vou Sim!</button>
+            <button class="rsvp-nao" onclick="rsvpNao()">😢 Não consigo ir</button>
+          </div>
+        </div>
+        <div class="divider-dot"><div class="dot-center"></div></div>
+        <div class="footer-conv">com muito amor · te espero ✦</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NÃO VAI -->
+  <div id="screen-nao">
+    <div class="nao-glow"><div class="nao-emoji">🥺</div></div>
+    <div class="nao-tag">✦ Que pena... ✦</div>
+    <div class="nao-title">Vai fazer falta!</div>
+    <p class="nao-msg">
+      A sua ausência vai ser sentida com muito carinho.<br><br>
+      Mas a vida continua e a gente se encontra em breve.<br><br>
+      <strong>Obrigada por fazer parte da história dela! 💗</strong>
+    </p>
+    <button class="btn-volta" onclick="showScreen('screen-convite')">← Voltar ao convite</button>
+  </div>
+
+</div>
+
+<script>
+const perguntas = [
+  { emoji:"🎂", texto:"Quantos anos a Michele vai completar nessa festa?", opcoes:["30 anos","35 anos","40 anos","33 anos"], correta:1, feedbackCerto:"Isso mesmo! 35 anos de muito amor! 🎉", feedbackErrado:"Ela vai completar 35 anos lindos! 🎂" },
+  { emoji:"👨‍👩‍👧‍👦", texto:"A Michele tem filhos. Quantos são e quais?", opcoes:["2 filhas","1 filho e 1 filha","2 filhos","3 filhos"], correta:1, feedbackCerto:"Perfeito! Um filho e uma filha, família linda! 💕", feedbackErrado:"Ela tem um filho e uma filha! 💕" },
+  { emoji:"🏍️", texto:"Todo mundo sabe que ela tem CNH pra carro... mas tem um segredo sobre ela!", opcoes:["Tem pra ônibus","Tem pra moto também","Não tem CNH","Tem pra caminhão"], correta:1, feedbackCerto:"Isso! Poucas pessoas sabem que ela pilota moto! 🏍️🔥", feedbackErrado:"Poucos sabem... ela tem habilitação pra moto! 🏍️🔥" },
+  { emoji:"🍺", texto:"Quando o assunto é cerveja, qual é a preferida da Michele?", opcoes:["Heineken","Brahma","Skol Tropical","Itaipava"], correta:2, feedbackCerto:"Isso sim é conhecer a aniversariante! Skol Tropical! 🍺", feedbackErrado:"A preferida dela é Skol Tropical. Anota! 😂" },
+  { emoji:"💗", texto:"A Michele tem afilhados. Quantos são ao todo?", opcoes:["3 afilhados","4 afilhados","5 afilhados","6 afilhados"], correta:3, feedbackCerto:"Acertou! 6 afilhados — madrinha de muito amor! 💗", feedbackErrado:"São 6 afilhados. Ela é a madrinha mais amada! 💗" }
+];
+
+let atual = 0;
+let respondido = false;
+
+function showScreen(id) {
+  ['screen-capa','screen-errou','screen-quiz','screen-convite','screen-nao'].forEach(function(s) {
+    var el = document.getElementById(s);
+    el.style.display = 'none';
+  });
+  var target = document.getElementById(id);
+  if (id === 'screen-errou' || id === 'screen-nao') {
+    target.style.display = 'flex';
+  } else {
+    target.style.display = 'block';
+  }
+  window.scrollTo(0, 0);
+}
+
+function startQuiz() {
+  atual = 0;
+  respondido = false;
+  for (var i = 0; i < 5; i++) {
+    document.getElementById('star-' + i).classList.remove('earned');
+  }
+  showScreen('screen-quiz');
+  renderPergunta();
+}
+
+function reiniciar() {
+  showScreen('screen-capa');
+}
+
+function renderPergunta() {
+  respondido = false;
+  var p = perguntas[atual];
+  document.getElementById('q-num').textContent = 'Pergunta 0' + (atual + 1);
+  document.getElementById('q-emoji').textContent = p.emoji;
+  document.getElementById('q-text').textContent = p.texto;
+  document.getElementById('prog-label').textContent = 'Pergunta ' + (atual + 1) + ' de 5';
+  document.getElementById('prog-bar').style.width = (((atual + 1) / 5) * 100) + '%';
+
+  var grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  for (var i = 0; i < p.opcoes.length; i++) {
+    (function(idx) {
+      var btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = p.opcoes[idx];
+      btn.onclick = function() { responder(idx); };
+      grid.appendChild(btn);
+    })(i);
+  }
+
+  var fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+
+  var next = document.getElementById('btn-next');
+  next.className = 'btn-next';
+  next.textContent = atual < 4 ? 'Próxima pergunta →' : '🎉 Ver o Convite!';
+}
+
+function responder(idx) {
+  if (respondido) return;
+  respondido = true;
+
+  var p = perguntas[atual];
+  var btns = document.querySelectorAll('.opt-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].disabled = true;
+  }
+
+  var acertou = (idx === p.correta);
+  btns[idx].classList.add(acertou ? 'correct' : 'wrong');
+
+  var fb = document.getElementById('feedback-box');
+
+  if (acertou) {
+    document.getElementById('star-' + atual).classList.add('earned');
+    fb.textContent = p.feedbackCerto;
+    fb.className = 'feedback-box show';
+    document.getElementById('btn-next').className = 'btn-next show';
+  } else {
+    btns[p.correta].classList.add('reveal-correct');
+    fb.textContent = p.feedbackErrado;
+    fb.className = 'feedback-box show';
+    setTimeout(function() {
+      document.getElementById('errou-certa-valor').textContent = p.opcoes[p.correta];
+      showScreen('screen-errou');
+    }, 1800);
+  }
+}
+
+function nextQuestion() {
+  atual++;
+  if (atual >= 5) {
+    showScreen('screen-convite');
+  } else {
+    renderPergunta();
+  }
+}
+
+function rsvpSim() {
+  var numero = '5551997579958';
+  var msg = '🎉 Oi Michele! Confirmando minha presença no seu aniversário! Vou com muito amor! 💗🎂';
+  window.open('https://wa.me/' + numero + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function rsvpNao() {
+  showScreen('screen-nao');
+}
+</script>
+</body>
+</html>
